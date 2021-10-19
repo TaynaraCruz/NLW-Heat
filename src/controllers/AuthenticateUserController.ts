@@ -6,9 +6,12 @@ class AuthenticateUserController {
     const { code } = req.body;
 
     const service = new AuthenticateUserService();
-    const result = service.execute(code);
-
-    return res.json(result);
+    try {
+      const result = service.execute(code);
+      return res.json(result);
+    } catch (err) {
+      return res.json({ error: err.message });
+    }
   }
 }
 
