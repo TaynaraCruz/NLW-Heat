@@ -23,11 +23,10 @@ io.on('connection', socket => {
   console.log(`Usuário conectado no Socket ${socket.id}`);
 })
 
-app.use(express.json); //Aceita body no formato JSON
+app.use(express.json()); //Aceita body no formato JSON
 app.use(router); //Toda vez que se usa app.use estamos usando middlewares
 
 app.get('/github', (req, res) => {
-  console.log('aooooooooo')
   res.redirect(`https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}`);
 });
 

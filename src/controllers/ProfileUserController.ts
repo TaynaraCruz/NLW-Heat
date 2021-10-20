@@ -6,7 +6,7 @@ class ProfileUserController {
     const { user_id } = req;
     const service = new ProfileUserService();
     try {
-      const result = service.execute(user_id);
+      const result = await service.execute(user_id);
       return res.json(result);
     } catch (err) {
       return res.json({ error: err.message });

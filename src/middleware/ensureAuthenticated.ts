@@ -20,7 +20,7 @@ export function ensureAuthenticated(req: Request, res: Response, next: NextFunct
    * [1] 858f5f5f4d8ikf2f2333f
    * logo token = 858f5f5f4d8ikf2f2333f
    * */
-  const [, token] = authToken.split('')
+  const [, token] = authToken.split(' ')
 
   try {
     const { sub } = verify(token, process.env.JWT_SECRET) as IPayload
