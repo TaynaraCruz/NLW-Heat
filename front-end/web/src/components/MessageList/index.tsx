@@ -1,6 +1,7 @@
 import styles from './styles.module.scss'
 import { api } from '../../services/api'
 import { useEffect, useState } from 'react'
+import { io } from 'socket.io-client'
 
 type Message = {
   id: string,
@@ -10,6 +11,13 @@ type Message = {
     avatar_url: string,
   }
 }
+
+let messagesQueue: Message[] = [];
+
+const socket = io('http://localhost:4000')
+socket.on('new_message', (newMessage: Message) => {
+  messagesQueue.push(newMessage)
+})
 
 export function MessageList() {
   /**
@@ -35,6 +43,21 @@ export function MessageList() {
       setMessages(res.data)
     })
   }, [])
+
+  useEffect(() => {
+    setInterval(() => {
+      if (messagesQueue.length > 0) {
+        setMessages(prevState => [ //Recebe o valor anterior do estado
+          messagesQueue[0],
+          prevState[0],
+          prevState[1],
+        ].filter(Boolean)) //Filtra valores que são falsys: undefined, vazio, nulo
+
+        messagesQueue.shift()
+      }
+    }, 3000)
+  }, [])
+
   return (
     <div className={styles.messageListWrapper}>
       <svg width="280" height="24" viewBox="0 0 280 24" fill="none" xmlns="http://www.w3.org/2000/svg">
