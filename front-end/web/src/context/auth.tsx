@@ -7,14 +7,14 @@ type AuthResponse = {
   user: {
     id: string,
     avatar_url: string,
-    nome: string,
+    name: string,
     login: string,
   }
 }
 
 type User = {
   id: string,
-  nome: string,
+  name: string,
   login: string,
   avatar_url: string,
 }
@@ -49,6 +49,7 @@ export function AuthProvider(props: AuthProvider) {
 
     const { token, user } = response.data;
     localStorage.setItem('@dowhile:token', token)
+    api.defaults.headers.common.authorization = `Bearer ${token}`
     setUser(user)
   }
 
